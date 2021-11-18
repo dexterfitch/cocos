@@ -1,4 +1,9 @@
 class SessionsController < ApplicationController
+  def show
+    current_user = User.find(session[:user_id])
+    render json: current_user, serializer: UserWithRecipesSerializer, status: :ok
+  end
+
   def create
     user = User.find_by(username: params[:username])
     if user && user.authenticate(params[:password]) # if user&.authenticate(params[:password])
