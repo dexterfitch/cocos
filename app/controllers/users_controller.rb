@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     end
 
     def show
-        render json: User.find(session[:user_id]), status: :ok
+        render json: User.find(params[:id]), serializer: UserWithRecipesSerializer, status: :ok
     end
     
     def create
