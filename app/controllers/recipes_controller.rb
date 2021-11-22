@@ -7,7 +7,7 @@ class RecipesController < ApplicationController
     end
 
     def show
-        render json: Recipe.find(session[:recipe_id]), status: :ok
+        render json: find_recipe, status: :ok
     end
     
     def create
@@ -17,18 +17,22 @@ class RecipesController < ApplicationController
     end
 
     def update
-        this_recipe = Recipe.find(params[:id])
+        this_recipe = find_recipe
         this_recipe.update!(recipe_params)
         render json: this_recipe, status: :ok
     end
 
     def destroy
-        this_recipe = Recipe.find(params[:id])
+        this_recipe = find_recipe
         this_recipe.destroy
         render status: :no_content
     end
 
     private
+
+    def find_recipe
+        Recipe.find(params[:id])
+    end
 
     def recipe_params
         params.permit(:name, :instructions, :url, :season, :user_id, :recipe)

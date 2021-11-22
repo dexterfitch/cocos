@@ -1,22 +1,25 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function Login({ setUser }) {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit(event) {
+    event.preventDefault();
     fetch("/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ username, password }),
-    }).then((r) => {
-      if (r.ok) {
-        r.json().then((user) => setUser(user));
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((user) => setUser(user));
       }
     });
+    navigate('/');
   }
 
   return (
@@ -29,7 +32,7 @@ function Login({ setUser }) {
           id="username"
           autoComplete="off"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(event) => setUsername(event.target.value)}
         />
         <label htmlFor="password">Password</label>
         <input
@@ -37,7 +40,7 @@ function Login({ setUser }) {
           id="password"
           autoComplete="current-password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(event) => setPassword(event.target.value)}
         />
         <button type="submit">Login</button>
       </form>
